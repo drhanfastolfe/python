@@ -45,15 +45,90 @@ class Board:
         
         return valid
     
+    def moves_left(self):
+        left = False
+        
+        if '-' in self.board:
+            left = True
+        
+        return left
+    
+    def win_player(self, player):
+        if player == 1:
+            sign = 'X'
+        elif player == 2:
+            sign = 'O'
+        
+        win = False
+        
+        # Row line 
+        for row in range(0, 7, 3):
+            line = 0
+            for col in range(row, 3 + row):
+                if self.board[col] == sign:
+                    line += 1
+                if line == 3:
+                    win = True
+                    break
+        
+        #Col line
+        if not win:
+            for col in range(3):
+                line = 0
+                for row in range(col, 9, col + 3):
+                    if self.board[row] == sign:
+                        line += 1
+                    if line == 3:
+                        win = True
+                        break
+        
+        #Downward diagonal
+        if not win:
+            line = 0
+            for dgl in range(0, 9, 4):
+                if self.board[dgl] == sign:
+                    line += 1
+                if line == 3:
+                    win = True
+                    break
+        
+        #Upward diagonal
+        if not win:
+            line = 0
+            for dgl in range(2, 7, 4):
+                if self.board[dgl] == sign:
+                    line += 1
+                if line == 3:
+                    win = True
+                    break
+                
+        return win
+            
+    def tie(self):
+        tie = False
+        
+        if not self.win_player(1) & self.win_player(2) & self.moves_left():
+            tie = True
+        
+        return tie
+    
 def play_game():
         b = Board()
         
-        b.display_board()
-        b.player1_turn(7)
-        b.display_board()
-        b.player2_turn(5)
-        b.display_board()
-        b.player1_turn(5)
-        b.display_board()
+        print('-- Tic tac toe --')
         
+        player1 = input('\nEn player 1 name: ')
+        player2 = input('\nEn player 2 name: ')
+        
+        print('\n-- Starts the game --')
+        
+        while not b.win_player(1) & b.win_player(2) & b.tie():    
+            b.display_board()
+            b.player1_turn(input('\n' + player1 + ' moves:'))
+            
+            
+            
+            
+            
+                
 play_game()

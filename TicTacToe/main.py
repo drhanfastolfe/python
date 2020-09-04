@@ -27,19 +27,17 @@ class Board:
     def style_position(position):
         if position in [1, 2, 3]:
             position += 6
-        
-        if position in [7, 8, 9]:
+        elif position in [7, 8, 9]:
             position -= 6
             
         return position
-    
-    @staticmethod
-    def valid_move(position):
+    #* Chnaged to normal method from static but generate problems with position
+    def valid_move(self, position):
         valid = True
         
-        position = Board.style_position(position) - 1
+        position = self.style_position(position)
         
-        if Board.board[position] in ['X', 'O']:
+        if self.board[position] in ['X', 'O']:
             valid = False
             print('Not valid move')
         
@@ -107,7 +105,7 @@ class Board:
     def tie(self):
         tie = False
         
-        if not self.win_player(1) & self.win_player(2) & self.moves_left():
+        if self.win_player(1) == False & self.win_player(2) == False & self.moves_left() == True:
             tie = True
         
         return tie
@@ -115,20 +113,41 @@ class Board:
 def play_game():
         b = Board()
         
-        print('-- Tic tac toe --')
+        print('\n-- Tic tac toe --')
         
-        player1 = input('\nEn player 1 name: ')
-        player2 = input('\nEn player 2 name: ')
+        player1 = input('\nEnter player 1 name: ')
+        player2 = input('\nEnter player 2 name: ')
         
-        print('\n-- Starts the game --')
+        print('\n-- Starts the game --\n')
+        b.display_board()
         
-        while not b.win_player(1) & b.win_player(2) & b.tie():    
-            b.display_board()
-            b.player1_turn(input('\n' + player1 + ' moves:'))
-            
-            
-            
-            
-            
+        while not (b.win_player(1) & b.win_player(2) & b.tie()):    
+            position1 = int(input('\n' + player1 + ' moves: '))
+           
+            while not b.valid_move(position1):
+                position1 = int(input('\n' + player1 + ' moves: '))
                 
+            b.player1_turn(position1)
+            print()
+            b.display_board()
+            
+            if b.win_player(1):
+                print('\nEnd of the game: ' + player1 + ' won!')
+            elif b.tie():
+                print('\nEnd of the game: tie!')
+            else:
+                position2 = int(input('\n' + player2 + ' moves: '))
+                
+                while not b.valid_move(position2):
+                    position2 = int(input('\n' + player2 + ' moves: '))
+                
+                b.player2_turn(position2)    
+                print()
+                b.display_board()
+                
+                if b.win_player(2):
+                    print('\nEnd of the game: ' + player2 + ' won!')
+                elif b.tie():
+                    print('\nEnd of the game: tie!')
+
 play_game()

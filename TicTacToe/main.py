@@ -14,14 +14,12 @@ class Board:
     def player1_turn(self, position):
         position = self.style_position(position)
         
-        if self.valid_move(position):
-            self.board[position-1] = 'X'
+        self.board[position] = 'X'
         
     def player2_turn(self, position):
         position = self.style_position(position)
         
-        if self.valid_move(position):
-            self.board[position-1] = 'O'
+        self.board[position] = 'O'
     
     @staticmethod
     def style_position(position):
@@ -30,8 +28,9 @@ class Board:
         elif position in [7, 8, 9]:
             position -= 6
             
-        return position
-    #* Chnaged to normal method from static but generate problems with position
+        return position - 1
+   
+    #* Changed to normal method from static but generate problems with position
     def valid_move(self, position):
         valid = True
         
@@ -105,11 +104,11 @@ class Board:
     def tie(self):
         tie = False
         
-        if self.win_player(1) == False & self.win_player(2) == False & self.moves_left() == True:
+        if (self.win_player(1) == False & self.win_player(2) == False) & self.moves_left() == False:
             tie = True
         
         return tie
-    
+
 def play_game():
         b = Board()
         
@@ -121,9 +120,9 @@ def play_game():
         print('\n-- Starts the game --\n')
         b.display_board()
         
-        while not (b.win_player(1) & b.win_player(2) & b.tie()):    
+        while not (b.win_player(1) | b.win_player(2) | b.tie()):    
             position1 = int(input('\n' + player1 + ' moves: '))
-           
+            
             while not b.valid_move(position1):
                 position1 = int(input('\n' + player1 + ' moves: '))
                 

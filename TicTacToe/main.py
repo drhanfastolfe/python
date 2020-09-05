@@ -22,7 +22,7 @@ class Board:
         self.board[position] = 'O'
     
     @staticmethod
-    def style_position(position):
+    def style_position(position): #* Makes easier to use the numpad
         if position in [1, 2, 3]:
             position += 6
         elif position in [7, 8, 9]:
@@ -30,7 +30,6 @@ class Board:
             
         return position - 1
    
-    #* Changed to normal method from static but generate problems with position
     def valid_move(self, position):
         valid = True
         
@@ -58,7 +57,7 @@ class Board:
         
         win = False
         
-        # Row line 
+        #* Row line 
         for row in range(0, 7, 3):
             line = 0
             for col in range(row, 3 + row):
@@ -68,7 +67,7 @@ class Board:
                     win = True
                     break
         
-        #Col line
+        #* Col line
         if not win:
             for col in range(3):
                 line = 0
@@ -79,7 +78,7 @@ class Board:
                         win = True
                         break
         
-        #Downward diagonal
+        #* Downward diagonal
         if not win:
             line = 0
             for dgl in range(0, 9, 4):
@@ -89,7 +88,7 @@ class Board:
                     win = True
                     break
         
-        #Upward diagonal
+        #* Upward diagonal
         if not win:
             line = 0
             for dgl in range(2, 7, 4):
